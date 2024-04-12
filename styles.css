@@ -1,0 +1,37 @@
+.invalid-feedback {
+    display: none;
+    color: red;
+}
+
+.error-icon {
+    display: none;
+    color: red;
+    cursor: pointer;
+    position: relative;
+    top: -30px;
+    left: 10px;
+}
+.input-group-text {
+    display: none;
+    cursor: pointer;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.input-group-text:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.form-group {
+    margin-bottom: 20px; /* Adjust this value to increase or decrease the gap */
+}
