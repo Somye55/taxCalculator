@@ -1,37 +1,20 @@
-.invalid-feedback {
-    display: none;
+.fa-exclamation-circle {
     color: red;
-}
-
-.error-icon {
-    display: none;
-    color: red;
-    cursor: pointer;
-    position: relative;
-    top: -30px;
-    left: 10px;
-}
-.input-group-text {
-    display: none;
-    cursor: pointer;
-}
-
-.tooltip {
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s;
+    cursor: pointer;
+
 }
 
-.input-group-text:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
+.input-group-text {
+    background-color: transparent;
 }
+
 .form-group {
     margin-bottom: 20px; /* Adjust this value to increase or decrease the gap */
 }
+.form-outline i {
+    position: absolute;
+    top:5%;
+    transform: translateY(-50%);
+  }
