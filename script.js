@@ -1,147 +1,149 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('tax-form');
-    const ageSelect = document.getElementById('age');
     const resultModal = document.getElementById('resultModal');
     const taxResult = document.getElementById('tax-result');
-
-
     const inputFields = document.querySelectorAll('#tax-form input[type="text"]');
     const ageGroup = document.getElementById('age');
-    const submitButton = document.getElementById('submit-button');
-    
-    inputFields.forEach(function(field) {
-        field.addEventListener('input', function() {
+
+    inputFields.forEach(function (field) {
+        field.addEventListener('input', function () {
             let allValid = true;
             let tooltipText = '';
             if (field.value.trim() === '') {
-                 allValid = false;
+                allValid = false;
                 tooltipText = "Input field is required!";
             } else if (isNaN(field.value)) {
-                 allValid = false;
+                allValid = false;
 
                 tooltipText = "Please enter only numerical characters!";
             }
             const exclamationIcon = field.nextElementSibling.firstElementChild;
             if (exclamationIcon && !allValid) {
-                exclamationIcon.style.visibility = 'visible'; // Show the icon
-                exclamationIcon.style.opacity = 1; // Show the icon
+                exclamationIcon.style.visibility = 'visible';
+                exclamationIcon.style.opacity = 1;
                 new bootstrap.Tooltip(exclamationIcon, {
                     title: tooltipText,
                     placement: "top"
                 });
             }
-            else{
-                exclamationIcon.style.visibility = 'hidden'; // Show the icon
+            else {
+                exclamationIcon.style.visibility = 'hidden';
                 exclamationIcon.style.opacity = 0;
             }
         })
-})
+    })
 
-    // Attach event listener to the submit button
-    // submitButton.addEventListener('click', function(e) {
-    //     e.preventDefault(); // Prevent form submission
-        
-
-    // });
-    
-
-    // Ensure the form's submit event listener is set up to validate the form
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Validate and calculate tax
+    form.addEventListener('submit', function (e) {
         const grossIncome = parseFloat(document.getElementById('annual-income').value) || 0;
         const extraIncome = parseFloat(document.getElementById('extra-income').value) || 0;
         const deductions = parseFloat(document.getElementById('total-ded').value) || 0;
-        const ageGroup = document.getElementById('age').value;
-
         let hasError = false;
+        e.preventDefault();
 
-        inputFields.forEach(function(field) {
+        inputFields.forEach(function (field) {
             if (field.value.trim() === '') {
                 hasError = true;
-                // Display the error icon for empty fields
                 const exclamationIcon = field.nextElementSibling.firstElementChild;
                 if (exclamationIcon) {
-                    exclamationIcon.style.visibility = 'visible'; // Show the icon
-                    exclamationIcon.style.opacity = 1; // Show the icon
+                    exclamationIcon.style.visibility = 'visible';
+                    exclamationIcon.style.opacity = 1;
                     new bootstrap.Tooltip(exclamationIcon, {
-                        title: "Input field is required",
+                        title: "Input field is required!",
+                        placement: "top"
+                    });
+                }
+            }
+            else if (isNaN(field.value)) {
+                hasError = true;
+                const exclamationIcon = field.nextElementSibling.firstElementChild;
+                if (exclamationIcon) {
+                    exclamationIcon.style.visibility = 'visible';
+                    exclamationIcon.style.opacity = 1;
+                    new bootstrap.Tooltip(exclamationIcon, {
+                        title: "Please enter numerical characters only!",
                         placement: "top"
                     });
                 }
             }
         });
+        if (ageGroup.value == '') {
+            const exclamationIcon = ageGroup.nextElementSibling.firstElementChild;
+            exclamationIcon.style.visibility = 'visible';
+            exclamationIcon.style.opacity = 1;
+        }
 
-    if (!ageGroup) {
-        showError(document.getElementById('age'));
-        hasError = true;
-    }
-    if (!grossIncome) {
-        showError(document.getElementById('annual-income'));
-        hasError = true;
-    }
-    if (!extraIncome) {
-        showError(document.getElementById('extra-income'));
-        hasError = true;
-    }
-    if (!deductions) {
-        showError(document.getElementById('total-ded'));
-        hasError = true;
-    }
+        if (!ageGroup || !grossIncome || !extraIncome || !deductions) {
+            hasError = true;
+        }
 
-    if (hasError) {
-        return; // Prevent further execution if there's an error
-    }
-
+        if (hasError) {
+            return;
+        }
         const totalIncome = grossIncome + extraIncome - deductions;
         let tax = 0;
-
         if (totalIncome > 800000) {
             const taxableIncome = totalIncome - 800000;
-            if (ageGroup === '<40') {
+            console.log(ageGroup)
+            if (ageGroup.value === '<40') {
                 tax = taxableIncome * 0.3;
-            } else if (ageGroup === '>=40&<60') {
+                console.log(tax)
+            } else if (ageGroup.value === '>=40&<60') {
                 tax = taxableIncome * 0.4;
-            } else if (ageGroup === '>=60') {
+            } else if (ageGroup.value === '>=60') {
                 tax = taxableIncome * 0.1;
             }
         }
-        console.log(hasError)
         if (hasError) {
             alert('Form is invalid. Please correct the errors.');
-        } 
-        else{
-            taxResult.textContent = 'Your tax is: ' + tax.toFixed(2) + ' Lakhs';
-            resultModal.classList.add('show'); // Add 'show' class to display the modal
+        }
+        else {
+            const incomeAfterTax = totalIncome - tax;
+            taxResult.innerHTML = '';
+
+            const taxAmount = document.createElement('p');
+            taxAmount.textContent = 'Your tax is: ' + tax.toFixed(2);
+            taxResult.appendChild(taxAmount);
+
+            const afterTaxIncome = document.createElement('p');
+            afterTaxIncome.textContent = 'Income after tax: ' + incomeAfterTax.toFixed(2);
+            taxResult.appendChild(afterTaxIncome);
+
+            resultModal.classList.add('show');
             resultModal.style.display = 'block';
         }
-        // Show result in modal
-       
     });
 
-     // Function to close the modal
+    ageGroup.addEventListener('input', function (e) {
+        e.preventDefault();
+        const exclamationIcon = ageGroup.nextElementSibling.firstElementChild;
+        if (ageGroup.value === '') {
+            exclamationIcon.style.visibility = 'visible';
+            exclamationIcon.style.opacity = 1;
+        }
+        else {
+            exclamationIcon.style.visibility = 'hidden';
+            exclamationIcon.style.opacity = 0;
+
+        }
+    })
+
     function closeModal() {
-        resultModal.classList.remove('show'); // Remove 'show' class to hide the modal
-        resultModal.style.display = 'none'; // Ensure the modal is hidden
+        resultModal.classList.remove('show');
+        resultModal.style.display = 'none';
     }
 
-    // Attach event listener to the close button with text
-    const closeButton = document.getElementById('close'); // Adjust this selector if necessary
+    const closeButton = document.getElementById('close');
     if (closeButton) {
         closeButton.addEventListener('click', closeModal);
     }
 
-    function showError(input) {
-        const errorFeedback = input.nextElementSibling;
-        errorFeedback.style.display = 'block';
-    }
-    inputFields.forEach(function(inputField) {
+    inputFields.forEach(function (inputField) {
         inputField.value = '';
     });
     ageGroup.value = '';
 });
+
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
+    return new bootstrap.Tooltip(tooltipTriggerEl)
 })

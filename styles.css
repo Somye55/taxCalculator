@@ -1,20 +1,38 @@
-.fa-exclamation-circle {
-    color: red;
-    visibility: hidden;
-    opacity: 0;
-    cursor: pointer;
+body {
+  font-family: "Poppins", sans-serif;
+}
 
+.fa-exclamation-circle {
+  color: red;
+  visibility: hidden;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .input-group-text {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .form-group {
-    margin-bottom: 20px; /* Adjust this value to increase or decrease the gap */
+  margin-bottom: 20px; /* Adjust this value to increase or decrease the gap */
 }
+
 .form-outline i {
-    position: absolute;
-    top:5%;
-    transform: translateY(-50%);
-  }
+  position: absolute;
+  top: 5%;
+  transform: translateY(-50%);
+}
+
+.info {
+  color: darkgray;
+}
+
+#tax-form {
+  margin: 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#tax-form .form-control {
+  border-radius: 10px;
+}
